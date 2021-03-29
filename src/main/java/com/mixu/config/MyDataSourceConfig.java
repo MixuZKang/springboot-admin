@@ -14,33 +14,37 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.Arrays;
 
-@Configuration
+
+//可以使用配置类的方式引入Druid数据源，也可以引入Druid的starter
+@Deprecated//标为过时类
+//@Configuration
 public class MyDataSourceConfig {
     /*引入数据源：
     以前引入数据源需要在xml中给容器注册一个bean并使用<property>给数据源的属性设置值
     现在只需要在配置类中@Bean注册数据源即可
 
     SpringBoot默认的自动配置@ConditionalOnMissingBean(DataSource.class)：
-        判断容器中没有DataSource才会自己配一个数据源，如果有则用自己的
+        判断容器中如果没有DataSource则会配一个数据源，如果有则用自己定义的
     */
+
     //DruidDataSource数据源里的属性跟配置文件中的spring.datasource配置项进行绑定
-    @ConfigurationProperties("spring.datasource")
-    @Bean
+//    @ConfigurationProperties("spring.datasource")
+//    @Bean
     public DataSource dataSource() throws SQLException {
         DruidDataSource druidDataSource = new DruidDataSource();
-        //手动设置数据源里的属性
+        //手动设置数据源里的属性，建议都在application配置文件中配置
 //        druidDataSource.setUrl();
 //        druidDataSource.setUsername();
 //        druidDataSource.setPassword();
-        //Filters中添加stat值：加入监控功能   添加wall值：开启防火墙功能
-//        druidDataSource.setFilters("stat,wall");
+        //Filters中添加stat值：加入sql监控功能    添加wall值：开启sql防火墙功能
+        druidDataSource.setFilters("stat,wall");
         //设置数据源最大活跃的线程数量
-//        druidDataSource.setMaxActive(10);
+        druidDataSource.setMaxActive(10);
         return druidDataSource;
     }
 
     //配置Druid的监控页功能
-    @Bean
+//    @Bean
     public ServletRegistrationBean statViewServlet() {
         StatViewServlet statViewServlet = new StatViewServlet();
         ServletRegistrationBean<StatViewServlet> registrationBean = new ServletRegistrationBean<>(statViewServlet, "/druid/*");
@@ -52,7 +56,7 @@ public class MyDataSourceConfig {
     }
 
     //WebStatFilter：用于采集web-jdbc关联监控的数据，监控web应用
-    @Bean
+//    @Bean
     public FilterRegistrationBean webStatFilter(){
         WebStatFilter webStatFilter = new WebStatFilter();
         FilterRegistrationBean<WebStatFilter> filterRegistrationBean = new FilterRegistrationBean<>(webStatFilter);
@@ -60,7 +64,6 @@ public class MyDataSourceConfig {
         filterRegistrationBean.setUrlPatterns(Arrays.asList("/*"));
         //排除掉哪些路径不拦截
         filterRegistrationBean.addInitParameter("exclusions","*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
-
         return filterRegistrationBean;
     }
 
