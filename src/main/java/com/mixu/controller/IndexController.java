@@ -1,11 +1,8 @@
 package com.mixu.controller;
 
-import com.mixu.pojo.Student;
+
 import com.mixu.pojo.User;
-import com.mixu.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -20,11 +17,6 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class IndexController {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    private StudentService studentService;
 
     /*视图解析原理：
     目标方法处理的过程中，所有数据都会被放在 ModelAndViewContainer 里面，其中也包括数据和视图地址
@@ -94,21 +86,6 @@ public class IndexController {
         }*/
 
         return "main";
-    }
-
-    @ResponseBody
-    @GetMapping("/sql")
-    public String queryFromDb(){
-        Long aLong = jdbcTemplate.queryForObject("select count(*) from user", Long.class);
-        return aLong.toString();
-    }
-
-    //测试mybatis
-    @ResponseBody
-    @GetMapping("/getStu")
-    public Student getStuById(@RequestParam("id") Integer id){
-
-        return studentService.getStuById(id);
     }
 
 }

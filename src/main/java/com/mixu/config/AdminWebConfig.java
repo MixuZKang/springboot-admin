@@ -26,6 +26,6 @@ public class AdminWebConfig implements WebMvcConfigurer {
                 //配置拦截哪些路径
                 .addPathPatterns("/**")// 配置**的话所有请求都会被拦截，包括静态资源
                 //放行哪些路径，在这里放行调所有的静态资源访问路径
-                .excludePathPatterns("/", "/login","/css/**","/fonts/**","/images/**","/js/**","/static/**","/sql");
+                .excludePathPatterns("/", "/login","/css/**","/fonts/**","/images/**","/js/**","/static/**");
     }
 }

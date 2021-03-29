@@ -1,0 +1,46 @@
+spring:
+# 配置数据源
+  datasource:
+    url: jdbc:mysql://localhost:3306/db2
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+
+# 配置Druid相关
+    druid:
+# 为Druid的监控页加入sql监控功能和sql防火墙功能
+      filters: stat,wall
+# 开启监控页，默认是false；添加访问监控页的登录功能，设置访问的用户名和密码
+      stat-view-servlet:
+        enabled: true
+        login-username: admin
+        login-password: 123
+# 开启监控web应用，默认是false；配置拦截路径，排除掉哪些路径不拦截
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
+# 开启监控spring组件，拦截com.mixu下的所有组件
+      aop-patterns: com.mixu.*
+
+#   设置数据源最大活跃的线程数量
+    tomcat:
+      max-active: 10
+
+#  配置数据源的类型 SpringBoot默认数据源用的是Hikari
+#   type: com.zaxxer.hikari.HikariDataSource
+
+# 配置jdbcTemplate超时时间
+  jdbc:
+    template:
+      query-timeout: 3s
+
+# 配置Mybatis相关
+mybatis:
+# 指定全局配置文件路径和sql映射文件路径
+#  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapper/*.xml
+# 全局配置文件中的配置，不能跟 config-location: 指定配置文件的项同时存在
+  configuration:
+# 开启驼峰命名
+    map-underscore-to-camel-case: true
