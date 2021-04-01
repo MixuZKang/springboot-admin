@@ -86,7 +86,8 @@ public class tableController {
                 new User("wangwu", "123456"));
         model.addAttribute("users",users);
 
-        if(users.size()>3){
+        //手动制造用户数量过多异常
+        if(users.size()>4){
             throw new UserTooManyException();
         }
         return "table/dynamic_table";

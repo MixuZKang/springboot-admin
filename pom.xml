@@ -19,6 +19,7 @@
     </properties>
 
     <dependencies>
+        <!--thymeleaf绑定了所有页面的前缀在classpath:/templates/，后缀为.html-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
